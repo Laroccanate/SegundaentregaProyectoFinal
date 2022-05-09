@@ -69,7 +69,6 @@ listaPerros.addEventListener ("click", ()=>{
 )
 
 
-
 //FUNCION LISTA PERRO//
 function agregarListaAlHTML(perro) {
     let ul = document.createElement ("ul")
