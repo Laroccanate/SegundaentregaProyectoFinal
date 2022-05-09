@@ -67,6 +67,9 @@ listaPerros.addEventListener ("click", ()=>{
     });
 }
 )
+
+
+
 //FUNCION LISTA PERRO//
 function agregarListaAlHTML(perro) {
     let ul = document.createElement ("ul")
@@ -80,17 +83,63 @@ function agregarListaAlHTML(perro) {
     liAnio.innerText =`Año de nacimiento: ${perro.anio}`
     const liTelefono =document.createElement ("li")
     liTelefono.innerText =`Telefono: ${perro.telefono}`
+    //PASEO PERRO SUMA//
     const masPaseo =document.createElement ("button")
     masPaseo.innerHTML = `Sumar un Paseo a ${perro.nombre}`
-    masPaseo.id = "agregarPaseo"
+    masPaseo.id = "masPaseo"
+    masPaseo.addEventListener("click", () => {
+    /*const perro = jauria[0];*/
+    let perrosAgregados = [];
+    const perrosStorageJSON = localStorage.getItem("jauria");
+    if(perrosStorageJSON) {
+        perrosAgregados = JSON.parse(perrosStorageJSON);
+    }
+    const indexArray = perrosAgregados.findIndex( (elemento) => {
+        return elemento.nombre == perro.nombre;
+    });
+    if(indexArray === -1) { 
+        perro.cantidad = 1;
+        perrosAgregados.push(perro);
+    } else { 
+        const perroEncontrado = perrosAgregados[indexArray];
+        perroEncontrado.cantidad++;
+        perrosAgregados[indexArray] = perroEncontrado;
+    }
+    localStorage.setItem("jauria", JSON.stringify(perrosAgregados));
+    });
+    //PASEO PERRO RESTA//
     const restarPaseo =document.createElement ("button")
     restarPaseo.innerHTML = `Quitar un Paseo a ${perro.nombre}`
     restarPaseo.id = "restarPaseo"
+    restarPaseo.addEventListener("click", () => {
+        /*const perro = jauria[0];*/
+        let perrosAgregados =[];
+        const perrosStorageJSON = localStorage.getItem("jauria");
+        if(perrosStorageJSON) {
+            perrosAgregados = JSON.parse(perrosStorageJSON);
+        }
+        const indexArray = perrosAgregados.findIndex( (elemento) => {
+            return elemento.nombre == perro.nombre;
+        });
+        if(indexArray !== -1) { 
+            const perroEncontrado = perrosAgregados[indexArray];
+            perroEncontrado.cantidad--;
+            if(perroEncontrado === 0) {
+                perroEncontrado.remove()
+            } else {
+                perrosAgregados[indexArray] = perroEncontrado;
+            }
+        }
+        localStorage.setItem("jauria", JSON.stringify(perrosAgregados));
+    });
     ul.append(li,liDuenio,liSexo,liAnio,liTelefono)
     contenedor.append(ul)
     contenedor.append(masPaseo)
     contenedor.append(restarPaseo)
 }
+
+
+
 
 //ULTIMO PERRO INGRESADO//
 let ultimoPerros = document.getElementById ("ultimoPerros")
@@ -124,7 +173,7 @@ input.addEventListener("input", ()=>{
 /*
 localStorage.clear()
 */
-
+/*
 //AGREGAR PASEO ARRAY 0 JSON
 const boton = document.getElementById("agregarPaseo");
 boton.addEventListener("click", () => {
@@ -172,4 +221,4 @@ boton2.addEventListener("click", () => {
     }
     localStorage.setItem("jauria", JSON.stringify(perrosAgregados));
 });
-
+*/
